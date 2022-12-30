@@ -1,9 +1,23 @@
-import express from 'express';
+import express, { Application, Request, Response} from 'express';
 
-const app = express();
+class App {
+    public app: Application;
 
-app.route("/").get((req, res) => {
-    res.send('Halo')
-})
+    constructor() {
+        this.app = express();
+        this.app.use(express.json());
+        this.routes()
+    }
 
-app.listen(8000);
+    protected routes(): void {
+        this.app.route('/').get((req: Request, res: Response) => {
+            res.json({
+                message: 'Express With Typescript'
+            })
+        })
+    }
+}
+
+const port : number = 8000;
+const app = new App().app;
+app.listen(port, () => "Aplikasi Running on Port" + port );
