@@ -1,5 +1,6 @@
 import express, { Application, Request, Response} from 'express';
 import bodyParser from 'body-parser'
+import morgan from 'morgan'
 
 class App {
     public app: Application;
@@ -7,12 +8,13 @@ class App {
     constructor() {
         this.app = express();
         this.app.use(express.json());
-        // this.middleware()
+        this.middleware()
         this.routes()
     }
 
     protected middleware() : void {
-        this.app.use(bodyParser.json());
+        // this.app.use(bodyParser.json());
+        this.app.use(morgan('dev'));
     }
 
     protected routes(): void {
