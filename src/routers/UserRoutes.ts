@@ -1,16 +1,7 @@
-import { Router, Request, Response} from 'express'
-import IRouter from './RouteInterface'
+import BaseRoutes from './BaseRouter';
 import UserController from '../controllers/UserController';
 
-
-class UserRoutes implements IRouter {
-    public router: Router;
-
-    constructor() {
-        this.router = Router();
-        this.routes()
-    }
-
+class UserRoutes extends BaseRoutes {
     routes(): void {
         this.router.get('/', UserController.index)
         this.router.post('/', UserController.create)
