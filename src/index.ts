@@ -5,6 +5,9 @@ import compression from 'compression'
 import helmet from 'helmet'
 import cors from 'cors'
 
+// Routers
+import UserRoutes from './routers/UserRoutes';
+
 class App {
     public app: Application;
 
@@ -30,11 +33,9 @@ class App {
             })
         })
 
-        this.app.route('/users').post((req: Request, res: Response) => {
-            res.json({
-                req: req.body
-            })
-        })
+        this.app.use('/users', UserRoutes)
+
+        
     }
 }
 
