@@ -1,5 +1,6 @@
 import { Router, Request, Response} from 'express'
 import IRouter from './RouteInterface'
+import UserController from '../controllers/UserController';
 
 
 class UserRoutes implements IRouter {
@@ -11,22 +12,8 @@ class UserRoutes implements IRouter {
     }
 
     routes(): void {
-        this.router.get('/', (req: Request, res: Response) => {
-            res.json({
-                code: 200,
-                data: {
-                    'message': 'Hallo User'
-                }
-            })
-        })
-        this.router.post('/', (req: Request, res: Response) => {
-            res.json({
-                code: 200,
-                data: {
-                    'message': 'Hallo User POST'
-                }
-            })
-        })
+        this.router.get('/', UserController.index)
+        this.router.post('/', UserController.create)
     }
 }
 
