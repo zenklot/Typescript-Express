@@ -3,46 +3,76 @@ import IController from './ControllerInterface'
 const db = require('../db/models');
 
 class TodoController implements IController {
-    index(req: Request, res: Response): Response {
-        return res.json({
-            code: 200,
-            data: {},
-            message: 'List Todo'
-        })
+    index = async (req: Request, res: Response): Promise<Response> => {
+        const { id } =req.app.locals.credential;
+        const todo = await db.todo.findAll({
+            where: {
+                user_id: id
+            },
+            attributes: ['id', 'description']
+        });
+        return res.status(200).json({
+            status: 200,
+            data: todo,
+        });
     }
     create = async (req: Request, res: Response): Promise<Response> => {
         const { id } = req.app.locals.credential;
         const { description } = req.body
-        const todo = await db.todo.create({
+        const todos = await db.todo.create({
             user_id: id,
             description
         })
         return res.status(200).json({
             code: 200,
-            data: todo,
+            data: todos,
             message: 'Create Todo'
         })
     }
-    show(req: Request, res: Response): Response {
+    show = async (req: Request, res: Response): Promise<Response> => {
         const { id } = req.params;
-        
-        return res.json({
-            code: 200,
-            data: {},
-            message: 'show success'
+        const user_id = req.app.locals.credential.id;
+        const todo = await db.todo.findOne({
+            where:{
+                id,
+                user_id
+            },
+            attributes: ['id', 'description']
         })
+
+        return res.status(200).json({
+            status: 200,
+            data: todo,
+            message: 'Show Todo'
+        })
+        
     }
-    update(req: Request, res: Response): Response {
+    update = async (req: Request, res: Response): Promise<Response> => {
         const { id } = req.params;
+        const user_id = req.app.locals.credential.id;
+        const { description } = req.body
+
+        const todo = await db.todo.update({description},{
+            where: {
+                id,
+                user_id
+            },
+        })
         
         return res.json({
             code: 200,
-            data: {},
             message: 'update success'
         })
     }
-    destroy(req: Request, res: Response): Response {
+    destroy = async (req: Request, res: Response): Promise<Response>  => {
         const { id } = req.params;
+        const user_id = req.app.locals.credential.id;
+        await db.todo.destroy({
+            where: {
+                id,
+                user_id
+            }
+        })
         return res.json({
             code: 200,
             data: {},
