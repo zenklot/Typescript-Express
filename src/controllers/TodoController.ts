@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import IController from './ControllerInterface'
+const db = require('../db/models');
 
 class TodoController implements IController {
     index(req: Request, res: Response): Response {
@@ -9,15 +10,17 @@ class TodoController implements IController {
             message: 'List Todo'
         })
     }
-    create(req: Request, res: Response): Response {
-        const { id, name } = req.body;
-        return res.json({
+    create = async (req: Request, res: Response): Promise<Response> => {
+        const { id } = req.app.locals.credential;
+        const { description } = req.body
+        const todo = await db.todo.create({
+            user_id: id,
+            description
+        })
+        return res.status(200).json({
             code: 200,
-            data: {
-                id,
-                name,
-            },
-            message: 'create success',
+            data: todo,
+            message: 'Create Todo'
         })
     }
     show(req: Request, res: Response): Response {

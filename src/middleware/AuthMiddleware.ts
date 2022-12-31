@@ -14,7 +14,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) : any => {
         const credential : string | jwt.JwtPayload = jwt.verify(token, secretKey)
         if(credential) {
             req.app.locals.credential = credential
-            next();
+            return next();
         }
         return res.status(401).json({
             status: 401,
