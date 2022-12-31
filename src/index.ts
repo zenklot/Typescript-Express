@@ -14,11 +14,11 @@ class App {
     constructor() {
         this.app = express();
         this.app.use(express.json());
-        this.middleware()
+        this.plugin()
         this.routes()
     }
 
-    protected middleware() : void {
+    protected plugin() : void {
         // this.app.use(bodyParser.json());
         this.app.use(morgan('dev'));
         this.app.use(compression());
